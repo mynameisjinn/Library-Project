@@ -40,13 +40,13 @@ class RegisterService {
         return this.#instance;
     }
 
-    setErrorMessage(errors){
-        const registerError = document.querySelectorAll(".register-error")
+    setErrorMessage(errors) {
+        const registerError = document.querySelectorAll(".register-error");
         
         this.#clearErrorMessage();
-        
+
         Object.keys(errors).forEach(error => {
-            if(error == "username"){
+            if(error == "username") {
                 registerError[0].textContent = errors[error];
             }else if(error == "password") {
                 registerError[1].textContent = errors[error];
@@ -56,7 +56,7 @@ class RegisterService {
                 registerError[3].textContent = errors[error];
             }else if(error == "email") {
                 registerError[4].textContent = errors[error];
-            }   
+            }
         });
     }
 
@@ -88,7 +88,7 @@ class RegisterEvent {
             const nameValue = document.querySelectorAll(".register-inputs")[3].value;
             const emailValue = document.querySelectorAll(".register-inputs")[4].value;
 
-            const user = new User(usernameValue, passwordValue, nameValue, emailValue);
+            const user = new User(usernameValue, passwordValue, repasswordValue, nameValue, emailValue);
 
             RegisterApi.getInstance().register(user);
         }

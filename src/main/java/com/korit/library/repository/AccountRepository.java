@@ -7,4 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AccountRepository {
 
     public UserDto findUserByUsername(String username);
+    public UserDto findUserByUserId(int userId);
+    public int saveUser(UserDto user);
+    public int saveRole(UserDto user);
 }
