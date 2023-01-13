@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class UserDto {
+    @ApiModelProperty(hidden = true)
     private int userId;
 
     @NotBlank
@@ -39,8 +41,12 @@ public class UserDto {
     @ApiModelProperty(name="email", value="이메일", example = "abc@gmail.com", required = true)
     private String email;
 
+    @ApiModelProperty(hidden = true)
     private List<RoleDtlDto> roleDtlDto;
 
+    @ApiModelProperty(hidden = true)
     private LocalDateTime createDate;
+
+    @ApiModelProperty(hidden = true)
     private LocalDateTime updateDate;
 }
