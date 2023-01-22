@@ -21,9 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .requestMatchers(PathRequest
-                                    .toStaticResources()
-                                    .atCommonLocations());
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
@@ -31,15 +29,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.httpBasic().disable();
         http.authorizeRequests()
-                .antMatchers("/mypage/**","/security/**")
+                .antMatchers("/mypage/**", "/security/**")
                 .authenticated()
                 .anyRequest()
                 .permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/account/login") // 로그인 페이지 get 요청
-                .loginProcessingUrl("/account/login")
+                .loginPage("/account/login") // 로그인 페이지 get요청
+                .loginProcessingUrl("/account/login") // 로그인 인증 post 요청
                 .defaultSuccessUrl("/index");
-
     }
 }
