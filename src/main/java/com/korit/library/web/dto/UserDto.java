@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -32,7 +33,7 @@ public class UserDto {
     private String repassword;
 
     @NotBlank
-    @ApiModelProperty(name = "name", value = "성명", example = "김혜진", required = true)
+    @ApiModelProperty(name = "name", value = "성명", example = "김준일", required = true)
     private String name;
 
     @NotBlank
