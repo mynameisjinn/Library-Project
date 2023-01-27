@@ -74,13 +74,13 @@
     <update id="updateBookByBookCode" parameterType="com.korit.library.web.dto.BookReqDto">
         update book_mst
         set
-        book_name = #{bookName},
-        author = if(#{author} = '', null, #{author}),
-        publisher = if(#{publisher} = '', null, #{publisher}),
-        publication_date = if(#{publicationDate} = '', null, #{publicationDate}),
-        category = #{category}
+            book_name = #{bookName},
+            author = if(#{author} = '', null, #{author}),
+            publisher = if(#{publisher} = '', null, #{publisher}),
+            publication_date = if(#{publicationDate} = '', null, #{publicationDate}),
+            category = #{category}
         where
-        book_code = #{bookCode}
+            book_code = #{bookCode}
     </update>
 
     <update id="maintainUpdateBookByBookCode" parameterType="com.korit.library.web.dto.BookReqDto">
@@ -94,4 +94,20 @@
         where
             book_code = #{bookCode}
     </update>
+
+    <delete id="deleteBook">
+        delete
+        from
+            book_mst
+        where
+            book_code = #{bookCode}
+    </delete>
+
+    <insert id="registerBookImages" parameterType="list">
+        insert into book_image
+        values
+            <foreach collection="list" item="file" separator=",">
+                (0, #{file.bookCode}, #{file.saveName}, #{file.originName})
+            </foreach>
+    </insert>
 </mapper>
