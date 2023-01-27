@@ -57,11 +57,11 @@ public class BookApi {
 
     @ParamsAspect
     @ValidAspect
-    @PutMapping("/book/{bookCode}")
-    public ResponseEntity<CMRespDto<Boolean>> modifyBook(@PathVariable String bookCode,
+    @PatchMapping("/book/{bookCode}")
+    public ResponseEntity<CMRespDto<?>> maintainModifyBook(@PathVariable String bookCode,
                                                          @Valid @RequestBody BookReqDto bookReqDto,
                                                            BindingResult bindingResult) {
-        bookService.modifyBook(bookReqDto);
+        bookService.maintainModifyBook(bookReqDto);
         return ResponseEntity
                 .ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(),
@@ -69,6 +69,15 @@ public class BookApi {
                         true));
     }
 
+//    @ParamsAspect
+//    @DeleteMapping("/book/{bookCode}")
+//    public ResponseEntity<CMRespDto<?>> removeBook (@PathVariable String bookCode){
+//        return ResponseEntity
+//                .ok()
+//                .body(new CMRespDto<>(HttpStatus.OK.value(),
+//                        "Successfully",
+//                        true));
+//    }
 }
 
 
