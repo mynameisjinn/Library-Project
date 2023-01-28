@@ -17,4 +17,4 @@ mybatis:
     - /mappers/*.xml
 
 file:
-  path: D:/library2/upload
+  path: D:/library2/upload/
