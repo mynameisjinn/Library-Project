@@ -31,6 +31,7 @@ public class RentalService {
                 .rentalId(rentalMst.getRentalId())
                 .bookId(bookId)
                 .build();
+        rentalDtlList.add(rentalDtl);
         rentalRepository.saveRentalDtl(rentalDtlList);
     }
 
