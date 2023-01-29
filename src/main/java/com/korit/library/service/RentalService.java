@@ -1,11 +1,15 @@
 package com.korit.library.service;
 
+import com.korit.library.entity.RentalDtl;
+import com.korit.library.entity.RentalMst;
 import com.korit.library.exception.CustomRentalException;
 import com.korit.library.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -14,13 +18,25 @@ public class RentalService {
     @Autowired
     private RentalRepository rentalRepository;
 
-    public void rental(int userId, int bookId){
-        availablility(userId);
+    public void rentalOne(int userId, int bookId){
+        availability(userId);
+
+        RentalMst rentalMst = RentalMst.builder()
+                .userId(userId)
+                .build();
+        rentalRepository.saveRentalMst(rentalMst);
+
+        List<RentalDtl> rentalDtlList = new ArrayList<>();
+        RentalDtl rentalDtl = RentalDtl.builder()
+                .rentalId(rentalMst.getRentalId())
+                .bookId(bookId)
+                .build();
+        rentalRepository.saveRentalDtl(rentalDtlList);
     }
 
-    private void availablility(int userId){
-        int rental_count = rentalRepository.rentalAvailability(userId);
-        if(rental_count > 2) {
+    private void availability(int userId){
+        int rentalCount = rentalRepository.rentalAvailability(userId);
+        if(rentalCount > 2) {
             Map<String, String> errorMap = new HashMap<String, String>();
             errorMap.put("rentalCountError","대여 회수를 초과하였습니다.");
 
