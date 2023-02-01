@@ -3,6 +3,7 @@ window.onload = () => {
     BookService.getInstance().loadCategories();
     ComponentEvent.getInstance().addClickEventSearchButton();
     ComponentEvent.getInstance().addClickEventDeleteButton();
+    ComponentEvent.getInstance().addClickEventDeleteCheckAll();
 }
 
 let searchObj = {
@@ -124,6 +125,8 @@ class BookService {
 
     loadBookList() {
         const responseData = BookSearchApi.getInstance().getBookList(searchObj);
+        const checkAll = document.querySelector(".delete-checkall");
+        checkAll.checked = false;
 
         const bookListBody = document.querySelector(".content-table tbody");
         bookListBody.innerHTML = "";
@@ -146,6 +149,7 @@ class BookService {
         });
 
         this.loadSearchNumberList();
+        ComponentEvent.getInstance().addClickEventDeleteCheckbox();
     }
 
     loadSearchNumberList() {
@@ -258,22 +262,48 @@ class ComponentEvent {
         }
     }
 
-        addClickEventDeleteButton() {
-            const deleteButton = document.querySelector(".delete-button");
-            deleteButton.onclick = () => {
-                if(confirm("정말로 삭제하시겠습니까?")) {
-                    const deleteArray = new Array();
+    addClickEventDeleteButton() {
+        const deleteButton = document.querySelector(".delete-button");
+        deleteButton.onclick = () => {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                const deleteArray = new Array();
 
-                    const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
-                    deleteCheckboxs.forEach((deleteCheckbox, index) => {
-                        if(deleteCheckbox.checked) {
-                            const bookIds = document.querySelectorAll(".book-id");
-                            deleteArray.push(bookIds[index].textContent);
-                        }
-                    });
+                const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
+                deleteCheckboxs.forEach((deleteCheckbox, index) => {
+                    if(deleteCheckbox.checked) {
+                        const bookIds = document.querySelectorAll(".book-id");
+                        deleteArray.push(bookIds[index].textContent);
+                    }
+                });
 
-                    BookService.getInstance().removeBooks(deleteArray);
-                }
+                BookService.getInstance().removeBooks(deleteArray);
             }
         }
+    }
+
+    addClickEventDeleteCheckAll() {
+        const checkAll = document.querySelector(".delete-checkall");
+        checkAll.onclick = () => {
+            const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
+            deleteCheckboxs.forEach(deleteCheckbox => {
+                deleteCheckbox.checked = checkAll.checked;
+            });
+        }
+    }
+
+    addClickEventDeleteCheckbox() {
+        const deleteCheckboxs = document.querySelectorAll(".delete-checkbox");
+        const checkAll = document.querySelector(".delete-checkall");
+
+        deleteCheckboxs.forEach(deleteCheckbox => {
+            deleteCheckbox.onclick = () => {
+            const deleteCheckedCheckboxs = document.querySelectorAll(".delete-checkbox:checked");
+                if(deleteCheckedCheckboxs.length == deleteCheckboxs.length) {
+                    checkAll.checked = true;
+                }else {
+                    checkAll.checked = false;
+                }
+            }
+        });
+    }
 }
