@@ -4,6 +4,8 @@ window.onload = () => {
     ComponentEvent.getInstance().addClickEventRegisterButton();
     ComponentEvent.getInstance().addClickEventImgAddButton();
     ComponentEvent.getInstance().addChangeEventImgFile();
+    ComponentEvent.getInstance().addClickEventImgRegisterButton();
+    ComponentEvent.getInstance().addClickEventImgCancelButton();
 }
 
 const bookObj = {
@@ -16,7 +18,8 @@ const bookObj = {
 }
 
 const fileObj = {
-    files: new Array()
+    files: new Array(),
+    formData: new FormData()
 }
 
 class BookRegisterApi {
@@ -43,10 +46,32 @@ class BookRegisterApi {
             },
             error: error => {
                 console.log(error);
+                BookRegisterService.getInstance().setErrors(error.responseJSON.data);
             }
         });
 
         return successFlag;
+    }
+
+    registerImg() {
+
+        $.ajax({
+            async: false,
+            type: "post",
+            url: `http://127.0.0.1:8000/api/admin/book/${bookObj.bookCode}/images`,
+            encType: "multipart/form-data",
+            contentType: false,
+            processData: false,
+            data: fileObj.formData,
+            dataType: "json",
+            success: response => {
+                alert("도서 이미지 등록 완료");
+                location.reload();
+            },
+            error: error => {
+                console.log(error);
+            }
+        });
     }
 
     getCategories() {
@@ -89,16 +114,38 @@ class BookRegisterService {
     }
 
     loadCategories() {
-            const responseData = BookRegisterApi.getInstance().getCategories();
+        const responseData = BookRegisterApi.getInstance().getCategories();
 
-            const categorySelect = document.querySelector(".category-select");
-            categorySelect.innerHTML = `<option value="">전체조회</option>`;
+        const categorySelect = document.querySelector(".category-select");
+        categorySelect.innerHTML = `<option value="">전체조회</option>`;
 
-            responseData.forEach(data => {
-                categorySelect.innerHTML += `
-                    <option value="${data.category}">${data.category}</option>
-                `;
-            });
+        responseData.forEach(data => {
+            categorySelect.innerHTML += `
+                <option value="${data.category}">${data.category}</option>
+            `;
+        });
+    }
+
+    setErrors(errors) {
+        const errorMessages = document.querySelectorAll(".error-message");
+        this.clearErrors();
+
+        Object.keys(errors).forEach(key => {
+            if(key == "bookCode") {
+                errorMessages[0].innerHTML = errors[key];
+            }else if(key == "bookName") {
+                errorMessages[1].innerHTML = errors[key];
+            }else if(key == "category") {
+                errorMessages[5].innerHTML = errors[key];
+            }
+        });
+    }
+
+    clearErrors() {
+        const errorMessages = document.querySelectorAll(".error-message");
+        errorMessages.forEach(error => {
+            error.innerHTML = "";
+        });
     }
 }
 
@@ -145,10 +192,10 @@ class ComponentEvent {
 
             if(confirm("도서 이미지를 등록하시겠습니까?")) {
                 const imgAddButton = document.querySelector(".img-add-button");
-                const imgRegisterButton = document.querySelector(".img-register-button");
+                const imgCancelButton = document.querySelector(".img-cancel-button");
 
                 imgAddButton.disabled = false;
-                imgRegisterButton.disabled = false;
+                imgCancelButton.disabled = false;
             }else{
                 location.reload();
             }
@@ -183,8 +230,30 @@ class ComponentEvent {
             });
 
             if(changeFlag) {
+                const imgRegisterButton = document.querySelector(".img-register-button");
+                imgRegisterButton.disabled = false;
+
                 ImgFileService.getInstance().getImgPreview();
                 imgFile.value = null;
+            }
+        }
+    }
+
+    addClickEventImgRegisterButton() {
+        const imgRegisterButton = document.querySelector(".img-register-button");
+
+        imgRegisterButton.onclick = () => {
+            fileObj.formData.append("files",fileObj.files[0]);
+
+            BookRegisterApi.getInstance().registerImg();
+        }
+    }
+    addClickEventImgCancelButton() {
+        const imgCancelButton = document.querySelector(".img-cancel-button");
+
+        imgCancelButton.onclick = () => {
+            if(confirm("정말로 이미지 등록을 취소하시겠습니까?")) {
+                location.reload();
             }
         }
     }
