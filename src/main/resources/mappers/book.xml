@@ -189,7 +189,7 @@
         from
             book_image
         where
-            image_id = #{imageId}
+            book_code = #{bookCode};
     </select>
 
     <delete id="deleteBookImage">
@@ -197,6 +197,6 @@
         from
             book_image
         where
-            book_code = #{bookCode};
+            image_id = #{imageId};
     </delete>
 </mapper>

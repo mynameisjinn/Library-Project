@@ -130,6 +130,15 @@ public class BookApi {
     }
 
     @ParamsAspect
+    @PostMapping("/book/{bookCode}/images/modification")
+    public ResponseEntity<CMRespDto<?>> modifyBookImg(@PathVariable String bookCode,
+                                                        @RequestPart List<MultipartFile> files) {
+        bookService.registerBookImages(bookCode, files);
+        return ResponseEntity.ok()
+                .body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", true));
+    }
+
+    @ParamsAspect
     @GetMapping("/book/{bookCode}/images")
     public ResponseEntity<CMRespDto<?>> getImages(@PathVariable String bookCode) {
         List<BookImage> bookImages = bookService.getBooks(bookCode);
