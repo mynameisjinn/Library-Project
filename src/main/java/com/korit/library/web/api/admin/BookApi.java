@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Api(tags = {"관리자 도서관리 API"})
 @RequestMapping("/api/admin")
@@ -26,6 +28,15 @@ public class BookApi {
 
     @Autowired
     private BookService bookService;
+
+    @GetMapping("/book/{bookCode}")
+    public ResponseEntity<CMRespDto<Map<String, Object>>> getBook(@PathVariable String bookCode) {
+
+        return ResponseEntity
+                .ok()
+                .body(new CMRespDto<>(HttpStatus.OK.value(),
+                        "Successfully",bookService.getBookAndImage(bookCode)));
+    }
 
     @ParamsAspect
     @ValidAspect
