@@ -30,7 +30,7 @@ public class BookMst {
     private String publisher;
 
     @ApiModelProperty(value = "출판일", example = "2023-01-01")
-    private LocalDate publicationDate;
+    private String publicationDate;
 
     @ApiModelProperty(value = "분야", example = "테스트")
     private String category;
