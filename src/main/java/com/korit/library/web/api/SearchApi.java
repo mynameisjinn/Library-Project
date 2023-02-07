@@ -1,5 +1,6 @@
 package com.korit.library.web.api;
 
+import com.korit.library.aop.annotation.ParamsAspect;
 import com.korit.library.service.SearchService;
 import com.korit.library.web.dto.CMRespDto;
 import com.korit.library.web.dto.SearchBookReqDto;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class SearchApi {
-
     private final SearchService searchService;
+
     @GetMapping("/search")
     public ResponseEntity<CMRespDto<?>> search(SearchBookReqDto searchBookReqDto) {
         return ResponseEntity
@@ -24,6 +25,7 @@ public class SearchApi {
                         "Successfully", searchService.getSearchBooks(searchBookReqDto)));
     }
 
+    @ParamsAspect
     @GetMapping("/search/totalcount")
     public ResponseEntity<CMRespDto<Integer>> getSearchBookTotalCount(SearchBookReqDto searchBookReqDto) {
         return ResponseEntity
