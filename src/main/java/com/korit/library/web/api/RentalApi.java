@@ -36,7 +36,7 @@ public class RentalApi {
         return ResponseEntity
                 .ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(),
-                        "Successfully",null));
+                        "Successfully",true));
     }
 
     @PutMapping("/rental/{bookId}")
@@ -47,7 +47,7 @@ public class RentalApi {
         return ResponseEntity
                 .ok()
                 .body(new CMRespDto<>(HttpStatus.OK.value(),
-                        "Successfully",null));
+                        "Successfully",true));
     }
 
 }
