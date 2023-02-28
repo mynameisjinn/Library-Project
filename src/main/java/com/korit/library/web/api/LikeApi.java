@@ -10,31 +10,28 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class LikeApi {
 
     private final LikeService likeService;
 
     @PostMapping("/book/{bookId}/like")
-    public ResponseEntity<CMRespDto<Integer>> like(
-            @PathVariable int bookId,
-            @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public ResponseEntity<CMRespDto<Integer>> like(@PathVariable int bookId,
+                                                   @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
         int likeCount = likeService.like(bookId, principalDetails.getUser().getUserId());
-        return ResponseEntity
-                .ok()
-                .body(new CMRespDto<>(HttpStatus.OK.value(),
-                        "Successfully", likeCount));
+
+        return ResponseEntity.ok().body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", likeCount));
     }
 
     @DeleteMapping("/book/{bookId}/like")
-    public ResponseEntity<CMRespDto<Integer>> dislike(
-            @PathVariable int bookId,
-            @AuthenticationPrincipal PrincipalDetails principalDetails){
-        int likeCount = likeService.like(bookId, principalDetails.getUser().getUserId());
-        return ResponseEntity
-                .ok()
-                .body(new CMRespDto<>(HttpStatus.OK.value(),
-                        "Successfully", likeCount));
+    public ResponseEntity<CMRespDto<Integer>> dislike(@PathVariable int bookId,
+                                                      @AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        int likeCount = likeService.dislike(bookId, principalDetails.getUser().getUserId());
+
+        return ResponseEntity.ok().body(new CMRespDto<>(HttpStatus.OK.value(), "Successfully", likeCount));
     }
+
 }

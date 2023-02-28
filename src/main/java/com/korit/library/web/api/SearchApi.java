@@ -20,7 +20,8 @@ public class SearchApi {
     private final SearchService searchService;
 
     @GetMapping("/search")
-    public ResponseEntity<CMRespDto<?>> search(SearchBookReqDto searchBookReqDto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<CMRespDto<?>> search(SearchBookReqDto searchBookReqDto,
+                                               @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         if(principalDetails != null) {
             searchBookReqDto.setUserId(principalDetails.getUser().getUserId());
